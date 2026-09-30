@@ -11,6 +11,10 @@ Currently, two official plugins are available:
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
+## Chat on Vercel
+
+Add `GEMINI_API_KEY` in Vercel Project Settings > Environment Variables, then redeploy. The chat endpoint is implemented as a Vercel function in `api/chat.js`; keep the key server-side and do not prefix it with `VITE_`. The local Vite server also accepts `GEMINI_API_KEY` or `GEMINI` in `.env`.
+
 ## Email and SMS verification
 
 The sign-in form can send one-time codes through Resend (email) or Twilio (SMS). Copy the relevant variable names from `.env.example` into `.env`, add credentials from the provider you want to use, and restart the Vite dev server. Email requires `RESEND_API_KEY` and a verified `AUTH_EMAIL_FROM` sender. SMS requires `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, and an enabled `TWILIO_PHONE_NUMBER`.

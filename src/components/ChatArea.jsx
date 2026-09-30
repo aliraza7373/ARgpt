@@ -53,6 +53,10 @@ const ChatConversation = ({ chatId }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("The chat API returned a page instead of JSON. Redeploy the Vercel project with its /api/chat function.");
+      }
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "The assistant could not reply.");
 

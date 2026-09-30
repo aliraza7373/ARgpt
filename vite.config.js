@@ -396,6 +396,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, projectRoot, '')
 
   return {
-    plugins: [react(), geminiChatApi(env.GEMINI), authCodeApi(env), billingApi(env)],
+    plugins: [react(), geminiChatApi(env.GEMINI || env.GEMINI_API_KEY), authCodeApi(env), billingApi(env)],
   }
 })
