@@ -53,12 +53,18 @@ const ChatConversation = ({ chatId }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
-      const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
-        throw new Error("The chat API returned a page instead of JSON. Redeploy the Vercel project with its /api/chat function.");
+      const responseBody = await response.text();
+      let result;
+      try {
+        result = responseBody ? JSON.parse(responseBody) : {};
+      } catch {
+        const responseType = response.headers.get("content-type") || "unknown content type";
+        throw new Error(`Chat API returned a non-JSON response (HTTP ${response.status}, ${responseType}). Deploy api/chat.js from the project root and redeploy this frontend.`);
       }
-      const result = await response.json();
       if (!response.ok) throw new Error(result.error || "The assistant could not reply.");
+      if (typeof result.answer !== "string" || !result.answer.trim()) {
+        throw new Error("The chat API response did not include an answer. Check the Vercel function logs.");
+      }
 
       const repliedChat = addMessage(requestChatId, {
         id: crypto.randomUUID(),
